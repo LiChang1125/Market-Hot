@@ -1,6 +1,7 @@
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { SITE } from "@aihot/site";
 import { CATEGORIES } from "@aihot/industry/taxonomy";
+import { beijingDay, beijingStamp } from "@aihot/contracts/time";
 
 type Card = { title: string; titleZh?: string; summary: string; summaryZh?: string; reviewed?: boolean; publishedAt: string; official: boolean; url: string; source: string; category: string };
 type Source = { id: string; name: string; ok: boolean; found: number; published: number };
@@ -15,9 +16,8 @@ for (const card of cards) {
 }
 const out = ".data/pages-site";
 const esc = (s: string) => s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
-const date = (s: string, withTime = false) => new Intl.DateTimeFormat("zh-CN", { timeZone: "Asia/Shanghai", month: "2-digit", day: "2-digit", ...(withTime ? {hour:"2-digit",minute:"2-digit",hour12:false} : {}) }).format(new Date(s));
 const label = new Map<string,string>(CATEGORIES.map(c=>[c.key,c.label]));
-const updated = esc(date(updatedAt,true));
+const updated = esc(beijingStamp(updatedAt));
 const ok = sources.filter(s => s.ok).length;
 const headline = (c: Card) => esc(c.reviewed ? c.titleZh! : c.title);
 const summary = (c: Card) => esc(c.reviewed ? c.summaryZh! : c.summary);
@@ -26,7 +26,7 @@ function article(c: Card, lead = false) {
     : c.titleZh ? `<details class="original"><summary>查看机器翻译</summary><span>${esc(c.titleZh)}</span><p>${esc(c.summaryZh || "")}</p></details>` : "";
   const tag = lead ? "h2" : "h3";
   return `<article class="${lead ? "lead" : "story"}" data-beat="${esc(c.category)}">
-    <div class="by"><span>${esc(label.get(c.category) || "行业动态")}</span><span>${esc(c.source)}${c.official ? " · 一手" : ""}</span><time datetime="${esc(c.publishedAt)}">${date(c.publishedAt)}</time></div>
+    <div class="by"><span>${esc(label.get(c.category) || "行业动态")}</span><span>${esc(c.source)}${c.official ? " · 一手" : ""}</span><time datetime="${esc(c.publishedAt)}">${beijingDay(c.publishedAt)}</time></div>
     <${tag}><a href="${esc(c.url)}" rel="noopener" target="_blank">${headline(c)}</a></${tag}><p>${summary(c)}</p>
     ${original}</article>`;
 }
