@@ -13,9 +13,9 @@
 | 配置状态 | 来源与方式 |
 | --- | --- |
 | 官方 RSS 或网页列表 | 宝洁、可口可乐、WPP、WPP Media、Omnicom、Publicis、Dentsu、Accenture Song、McKinsey、Bain、BCG、Google Ads & Commerce、Meta 新闻室、FTC、CMA、IAB、中国广告协会、市场监管总局广告监管司。集团通用源经行业预筛。原 Interpublic 新闻入口已跳转到 Omnicom，统一采集，主题库保留 Interpublic。 |
-| 行业媒体 RSS 或网页列表 | Campaign Asia-Pacific、Adweek、The Drum、Digiday、Morketing、SocialBeta。 |
+| 行业媒体 RSS 或网页列表 | Campaign Asia-Pacific、Adweek、The Drum、Digiday、Morketing、SocialBeta、刀法研究所（数英作者专栏）。 |
 | 已配置，默认暂停 | Marketing Week 的 RSS 在验证环境返回 403。X 仅配置分析师 Eric Seufert 和记者 Lara O’Reilly，启用前设置 SocialData 密钥与额度。 |
-| 等待接入的外部推送 | Think with Google、Meta for Business 专栏、TikTok Newsroom、小红书商业化、巨量引擎、刀法研究所、36氪及虎嗅的品牌营销栏目。当前仅预留各自的 sourceId；接通授权订阅或栏目供稿后在后台启用。只向相应来源推送该发布方的原文。 |
+| 等待接入的外部推送 | Think with Google、Meta for Business 专栏、TikTok Newsroom、小红书商业化、巨量引擎、36氪及虎嗅的品牌营销栏目。当前仅预留各自的 sourceId；接通授权订阅或栏目供稿后在后台启用。只向相应来源推送该发布方的原文。 |
 
 没有明确全文许可的来源只公开摘要和原文链接。付费服务和采集需在部署环境单独开启。列表能返回标题并不保证每篇文章都能取得日期与正文；后台“信源”可预览、诊断和暂停。进入精选还需要完成评分和去重。
 

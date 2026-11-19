@@ -40,18 +40,18 @@ async function article(title: string, summary: string) {
 const hrefs = (mentions: Array<{ href: string | null }>) => mentions.map((m) => m.href);
 
 test("an article page is sent the pages its summary names: the module's and the engine's company topics", async () => {
-  const id = await article("Dots 2 发布", "OpenAI 发布 Dots 2，接入了已有的应用。");
+  const id = await article("Dots 2 发布", "WPP 发布 Dots 2，接入了已有的应用。");
   installModules([]);
   const bare = await loadItemDetail(id);
   assert.equal(bare.kind, "found");
   if (bare.kind !== "found") return;
-  assert.deepEqual(hrefs(bare.item.mentions), ["/topics/openai"], "a site without modules links its companies only");
+  assert.deepEqual(hrefs(bare.item.mentions), ["/topics/wpp"], "a site without modules links its companies only");
 
   installModules(models);
   const full = await loadItemDetail(id);
   if (full.kind !== "found") return assert.fail("article missing");
   assert.deepEqual(full.item.mentions, [
-    { href: "/topics/openai", names: ["OpenAI"] },
+    { href: "/topics/wpp", names: ["WPP"] },
     { href: "/models/dots-2", names: ["Dots 2"] },
   ]);
 });
@@ -74,9 +74,9 @@ test("a report is sent the pages its lead and summaries name", async () => {
   const key = "2096-02-01";
   await sql`INSERT INTO reports (kind, key, window_start, window_end, content, generated_at)
     VALUES ('daily', ${key}, ${at}, ${at}, ${sql.json({
-      lead: { title: "英伟达发布新卡", leadParagraph: "英伟达发布新卡。" },
+      lead: { title: "宝洁调整媒介预算", leadParagraph: "宝洁调整媒介预算。" },
       sections: [{ label: "模型", items: [{ itemId: id, title: "Dots 2 发布", summary: "Dots 2 上线。", sourceUrl: "https://example.com", sourceName: "Mention source" }] }],
     } as never)}, ${at})`;
   const report = (await loadReport("daily", key))!;
-  assert.deepEqual(hrefs(report.mentions), ["/topics/nvidia", "/models/dots-2"]);
+  assert.deepEqual(hrefs(report.mentions), ["/topics/pg", "/models/dots-2"]);
 });

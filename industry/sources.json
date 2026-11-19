@@ -542,14 +542,24 @@
     {
       "id": "dao-insights",
       "name": "刀法研究所",
-      "kind": "external",
-      "config": {},
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.digitaling.com/people/articles/11049072",
+        "parseMode": "html",
+        "itemSelector": "a[href^=\"https://www.digitaling.com/articles/\"][href$=\".html\"]",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], time[datetime]"
+        }
+      },
       "tier": "T2",
       "participation_mode": "editorial",
       "interval_minutes": 60,
       "site_fulltext": false,
       "syndicate_fulltext": false,
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "36kr-brands",
