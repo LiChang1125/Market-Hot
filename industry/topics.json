@@ -1,0 +1,332 @@
+{
+  "groups": [
+    {
+      "key": "company",
+      "name": "公司与机构",
+      "blurb": "追踪品牌、平台、代理集团与监管机构。"
+    },
+    {
+      "key": "field",
+      "name": "营销议题",
+      "blurb": "按经营和投放决策追踪进展。"
+    },
+    {
+      "key": "genre",
+      "name": "内容形态",
+      "blurb": "按研究、复盘与政策原文阅读。"
+    }
+  ],
+  "topics": [
+    {
+      "slug": "pg",
+      "name": "宝洁",
+      "group": "company",
+      "entityId": "pg",
+      "aliases": [
+        "P&G",
+        "Procter & Gamble"
+      ],
+      "definition": "以宝洁为主体的营销动态。"
+    },
+    {
+      "slug": "coca-cola",
+      "name": "可口可乐",
+      "group": "company",
+      "entityId": "coca-cola",
+      "aliases": [
+        "Coca-Cola"
+      ],
+      "definition": "可口可乐公司的品牌组合、渠道与营销投资。"
+    },
+    {
+      "slug": "unilever",
+      "name": "联合利华",
+      "group": "company",
+      "entityId": "unilever",
+      "aliases": [
+        "Unilever"
+      ],
+      "definition": "以联合利华为主体的营销动态。"
+    },
+    {
+      "slug": "wpp",
+      "name": "WPP",
+      "group": "company",
+      "entityId": "wpp",
+      "aliases": [
+        "WPP集团"
+      ],
+      "definition": "以WPP为主体的营销动态。"
+    },
+    {
+      "slug": "omnicom",
+      "name": "Omnicom",
+      "group": "company",
+      "entityId": "omnicom",
+      "aliases": [
+        "宏盟"
+      ],
+      "definition": "以Omnicom为主体的营销动态。"
+    },
+    {
+      "slug": "publicis",
+      "name": "Publicis",
+      "group": "company",
+      "entityId": "publicis",
+      "aliases": [
+        "阳狮"
+      ],
+      "definition": "以Publicis为主体的营销动态。"
+    },
+    {
+      "slug": "ipg",
+      "name": "Interpublic",
+      "group": "company",
+      "entityId": "ipg",
+      "aliases": [
+        "IPG",
+        "埃培智"
+      ],
+      "definition": "以Interpublic为主体的营销动态。"
+    },
+    {
+      "slug": "dentsu",
+      "name": "Dentsu",
+      "group": "company",
+      "entityId": "dentsu",
+      "aliases": [
+        "电通"
+      ],
+      "definition": "以Dentsu为主体的营销动态。"
+    },
+    {
+      "slug": "accenture",
+      "name": "Accenture Song",
+      "group": "company",
+      "entityId": "accenture",
+      "aliases": [
+        "埃森哲宋",
+        "埃森哲互动"
+      ],
+      "definition": "以Accenture Song为主体的营销动态。"
+    },
+    {
+      "slug": "mckinsey",
+      "name": "McKinsey",
+      "group": "company",
+      "entityId": "mckinsey",
+      "aliases": [
+        "麦肯锡"
+      ],
+      "definition": "以McKinsey为主体的营销动态。"
+    },
+    {
+      "slug": "bain",
+      "name": "Bain",
+      "group": "company",
+      "entityId": "bain",
+      "aliases": [
+        "贝恩"
+      ],
+      "definition": "以Bain为主体的营销动态。"
+    },
+    {
+      "slug": "bcg",
+      "name": "BCG",
+      "group": "company",
+      "entityId": "bcg",
+      "aliases": [
+        "波士顿咨询",
+        "Boston Consulting Group"
+      ],
+      "definition": "以BCG为主体的营销动态。"
+    },
+    {
+      "slug": "google",
+      "name": "Google",
+      "group": "company",
+      "entityId": "google",
+      "aliases": [
+        "Google Ads",
+        "谷歌"
+      ],
+      "definition": "以Google为主体的营销动态。"
+    },
+    {
+      "slug": "meta",
+      "name": "Meta",
+      "group": "company",
+      "entityId": "meta",
+      "aliases": [
+        "Meta for Business"
+      ],
+      "definition": "以Meta为主体的营销动态。"
+    },
+    {
+      "slug": "tiktok",
+      "name": "TikTok",
+      "group": "company",
+      "entityId": "tiktok",
+      "aliases": [
+        "TikTok for Business"
+      ],
+      "definition": "以TikTok为主体的营销动态。"
+    },
+    {
+      "slug": "xiaohongshu",
+      "name": "小红书",
+      "group": "company",
+      "entityId": "xiaohongshu",
+      "aliases": [
+        "聚光平台"
+      ],
+      "definition": "以小红书为主体的营销动态。"
+    },
+    {
+      "slug": "douyin",
+      "name": "抖音",
+      "group": "company",
+      "entityId": "douyin",
+      "aliases": [
+        "巨量引擎",
+        "Ocean Engine"
+      ],
+      "definition": "以抖音为主体的营销动态。"
+    },
+    {
+      "slug": "ftc",
+      "name": "FTC",
+      "group": "company",
+      "entityId": "ftc",
+      "aliases": [
+        "Federal Trade Commission",
+        "美国联邦贸易委员会"
+      ],
+      "definition": "以FTC为主体的营销动态。"
+    },
+    {
+      "slug": "cma",
+      "name": "CMA",
+      "group": "company",
+      "entityId": "cma",
+      "aliases": [
+        "Competition and Markets Authority",
+        "英国竞争与市场管理局"
+      ],
+      "definition": "以CMA为主体的营销动态。"
+    },
+    {
+      "slug": "iab",
+      "name": "IAB",
+      "group": "company",
+      "entityId": "iab",
+      "aliases": [
+        "Interactive Advertising Bureau",
+        "互动广告局"
+      ],
+      "definition": "以IAB为主体的营销动态。"
+    },
+    {
+      "slug": "caa",
+      "name": "中国广告协会",
+      "group": "company",
+      "entityId": "caa",
+      "aliases": [
+        "中广协"
+      ],
+      "definition": "以中国广告协会为主体的营销动态。"
+    },
+    {
+      "slug": "samr",
+      "name": "市场监管总局",
+      "group": "company",
+      "entityId": "samr",
+      "aliases": [
+        "国家市场监督管理总局",
+        "广告监管司"
+      ],
+      "definition": "以市场监管总局为主体的营销动态。"
+    },
+    {
+      "slug": "brand-strategy",
+      "name": "品牌战略",
+      "group": "field",
+      "tags": [
+        "品牌战略"
+      ],
+      "definition": "预算、品牌组合、定位、定价、渠道或组织的经营决策。"
+    },
+    {
+      "slug": "media-buying",
+      "name": "媒介与投放",
+      "group": "field",
+      "tags": [
+        "投放测量"
+      ],
+      "definition": "广告支出、库存交易、增量测量、归因和投放效果。"
+    },
+    {
+      "slug": "ad-platforms",
+      "name": "平台与工具",
+      "group": "field",
+      "tags": [
+        "平台更新"
+      ],
+      "definition": "改变定向、出价、素材生产或分发的平台规则与产品更新。"
+    },
+    {
+      "slug": "consumer-insights",
+      "name": "消费者研究",
+      "group": "field",
+      "tags": [
+        "消费者研究"
+      ],
+      "definition": "有样本、时间范围或方法的消费者行为与需求研究。"
+    },
+    {
+      "slug": "agencies",
+      "name": "代理与咨询",
+      "group": "field",
+      "tags": [
+        "代理业动态"
+      ],
+      "definition": "代理集团及咨询机构的策略、服务模式、并购与客户预算流向。报告优先按研究对象归类。"
+    },
+    {
+      "slug": "regulation",
+      "name": "监管与标准",
+      "group": "field",
+      "tags": [
+        "政策/监管"
+      ],
+      "definition": "广告合规、执法、政策征询、标准与生效范围。"
+    },
+    {
+      "slug": "reports",
+      "name": "研究报告",
+      "group": "genre",
+      "tags": [
+        "研究报告"
+      ],
+      "definition": "收录带有「研究报告」标签的报道。"
+    },
+    {
+      "slug": "cases",
+      "name": "案例复盘",
+      "group": "genre",
+      "tags": [
+        "案例复盘"
+      ],
+      "definition": "收录带有「案例复盘」标签的报道。"
+    },
+    {
+      "slug": "analysis",
+      "name": "行业观点",
+      "group": "genre",
+      "tags": [
+        "行业观点"
+      ],
+      "definition": "收录带有「行业观点」标签的报道。"
+    }
+  ]
+}

@@ -1,0 +1,626 @@
+{
+  "sources": [
+    {
+      "id": "pg-stories",
+      "name": "宝洁集团",
+      "kind": "web_list",
+      "config": {
+        "url": "https://us.pg.com/blogs/",
+        "parseMode": "html",
+        "itemSelector": "a[href^=\"/blogs/\"]:not([href=\"/blogs/\"])",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "pg"
+    },
+    {
+      "id": "wpp-news",
+      "name": "WPP",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.wpp.com/en/news",
+        "parseMode": "html",
+        "itemSelector": "a[href^=\"/en/news/\"]",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "wpp"
+    },
+    {
+      "id": "omc-news",
+      "name": "Omnicom",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.omc.com/feed/"
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "omnicom"
+    },
+    {
+      "id": "publicis-news",
+      "name": "Publicis Groupe",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.publicisgroupe.com/en/news/press-releases",
+        "parseMode": "html",
+        "itemSelector": "a[href^=\"/en/news/press-releases/\"]",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "publicis"
+    },
+    {
+      "id": "dentsu-news",
+      "name": "Dentsu Group",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.group.dentsu.com/en/news/release/",
+        "parseMode": "html",
+        "itemSelector": "a[href^=\"/en/news/release/\"][href$=\".html\"]:not([href*=\"index\"])",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "dentsu"
+    },
+    {
+      "id": "song-insights",
+      "name": "Accenture Song",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.accenture.com/en/about/accenture-song-index",
+        "parseMode": "html",
+        "itemSelector": "a[href*=\"newsroom.accenture.com/news/\"], a[href*=\"/insights/song/\"]",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "accenture"
+    },
+    {
+      "id": "bain-insights",
+      "name": "Bain 客户战略与营销",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.bain.com/consulting-services/customer-strategy-and-marketing/",
+        "parseMode": "html",
+        "itemSelector": "a[href^=\"/insights/\"]:not([href*=\"?\"]):not([href*=\"/topics/\"]):not([href*=\"featured-topics\"]):not([href=\"/insights/\"]):not([href$=\"/books/\"]):not([href$=\"-insights/\"])",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "bain"
+    },
+    {
+      "id": "bcg-insights",
+      "name": "BCG 营销与销售",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.bcg.com/capabilities/marketing-sales/insights",
+        "parseMode": "html",
+        "itemSelector": "a[href*=\"/publications/20\"]",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "bcg"
+    },
+    {
+      "id": "google-ads",
+      "name": "Google Ads & Commerce",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://blog.google/products/ads-commerce/rss/"
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "google"
+    },
+    {
+      "id": "meta-news",
+      "name": "Meta 新闻室",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://about.fb.com/news/feed/"
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "meta"
+    },
+    {
+      "id": "ftc-news",
+      "name": "FTC",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.ftc.gov/feeds/press-release.xml"
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "ftc"
+    },
+    {
+      "id": "cma-news",
+      "name": "CMA",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.gov.uk/search/news-and-communications.atom?organisations%5B%5D=competition-and-markets-authority"
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "cma"
+    },
+    {
+      "id": "iab-news",
+      "name": "IAB",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.iab.com/news/",
+        "parseMode": "html",
+        "itemSelector": "a[href^=\"https://www.iab.com/news/\"]:not([href=\"https://www.iab.com/news/\"]), a[href^=\"https://www.iab.com/insights/\"]:not([href=\"https://www.iab.com/insights/\"])",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "iab"
+    },
+    {
+      "id": "caa-news",
+      "name": "中国广告协会",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.china-caa.org/",
+        "parseMode": "html",
+        "itemSelector": "a[href^=\"/cnaa/newsdetail/\"]",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "caa"
+    },
+    {
+      "id": "samr-ads",
+      "name": "市场监管总局广告监管司",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.samr.gov.cn/ggjgs/",
+        "parseMode": "html",
+        "itemSelector": "a[href*=\"/ggjgs/\"][href*=\"/art/\"]",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "samr"
+    },
+    {
+      "id": "adweek",
+      "name": "Adweek",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.adweek.com/feed/"
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "digiday",
+      "name": "Digiday",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://digiday.com/feed/"
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "campaign",
+      "name": "Campaign Asia-Pacific",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.campaignasia.com/",
+        "parseMode": "html",
+        "itemSelector": "a[href*=\"/article/\"]:has(h2, h3)",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+        },
+        "titleSelector": "h2, h3"
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "drum",
+      "name": "The Drum",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.thedrum.com/",
+        "parseMode": "html",
+        "itemSelector": "a[href^=\"/news/\"]",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+        }
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "morketing",
+      "name": "Morketing",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.morketing.com/",
+        "parseMode": "html",
+        "itemSelector": "a[href^=\"/detail/\"]",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+        }
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "socialbeta",
+      "name": "SocialBeta",
+      "kind": "web_list",
+      "config": {
+        "url": "https://socialbeta.com/",
+        "parseMode": "html",
+        "itemSelector": "a[href*=\"/article/\"]",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+        }
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "marketing-week",
+      "name": "Marketing Week",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.marketingweek.com/feed/"
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false
+    },
+    {
+      "id": "x-eric_seufert",
+      "name": "X：Eric Seufert (@eric_seufert)",
+      "kind": "x_search",
+      "config": {
+        "query": "from:eric_seufert -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false
+    },
+    {
+      "id": "x-larakiara",
+      "name": "X：Lara O’Reilly (@larakiara)",
+      "kind": "x_search",
+      "config": {
+        "query": "from:larakiara -filter:replies",
+        "searchType": "Latest"
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false
+    },
+    {
+      "id": "mckinsey-insights",
+      "name": "McKinsey 增长、营销与销售",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.mckinsey.com/insights/rss"
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "mckinsey",
+      "enabled": true
+    },
+    {
+      "id": "think-google",
+      "name": "Think with Google",
+      "kind": "external",
+      "config": {},
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "google",
+      "enabled": false
+    },
+    {
+      "id": "meta-business",
+      "name": "Meta for Business",
+      "kind": "external",
+      "config": {},
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "meta",
+      "enabled": false
+    },
+    {
+      "id": "tiktok-news",
+      "name": "TikTok Newsroom",
+      "kind": "external",
+      "config": {},
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "tiktok",
+      "enabled": false
+    },
+    {
+      "id": "red-business",
+      "name": "小红书商业动态",
+      "kind": "external",
+      "config": {},
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "xiaohongshu",
+      "enabled": false
+    },
+    {
+      "id": "ocean-news",
+      "name": "巨量引擎官方公告",
+      "kind": "external",
+      "config": {},
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "douyin",
+      "enabled": false
+    },
+    {
+      "id": "dao-insights",
+      "name": "刀法研究所",
+      "kind": "external",
+      "config": {},
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false
+    },
+    {
+      "id": "36kr-brands",
+      "name": "36氪品牌营销",
+      "kind": "external",
+      "config": {},
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false
+    },
+    {
+      "id": "huxiu-brands",
+      "name": "虎嗅品牌营销",
+      "kind": "external",
+      "config": {},
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false
+    },
+    {
+      "id": "wpp-media",
+      "name": "WPP Media 研究与观点",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.wppmedia.com/news",
+        "parseMode": "html",
+        "itemSelector": "a[href^=\"/news/\"]:has(h2, h3)",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+        },
+        "titleSelector": "h2, h3"
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "wpp"
+    },
+    {
+      "id": "coca-cola",
+      "name": "可口可乐公司新闻室",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.coca-colacompany.com/media-center",
+        "parseMode": "html",
+        "itemSelector": "a[href^=\"/media-center/\"]",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 6,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "owner_entity_id": "coca-cola"
+    }
+  ]
+}
