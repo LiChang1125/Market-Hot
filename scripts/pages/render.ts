@@ -2,20 +2,28 @@ import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { SITE } from "@aihot/site";
 import { CATEGORIES } from "@aihot/industry/taxonomy";
 
-type Card = { title: string; titleZh?: string; summary: string; summaryZh?: string; publishedAt: string; official: boolean; url: string; source: string; category: string };
+type Card = { title: string; titleZh?: string; summary: string; summaryZh?: string; reviewed?: boolean; publishedAt: string; official: boolean; url: string; source: string; category: string };
 type Source = { id: string; name: string; ok: boolean; found: number; published: number };
 const input = ".data/free-reader/digest.json";
 const { cards, sources, updatedAt }: { cards: Card[]; sources: Source[]; updatedAt: string } = JSON.parse(await readFile(input, "utf8"));
+const reviewed: Record<string, [string, string]> = JSON.parse(await readFile("industry/reader-copy.json", "utf8"));
+for (const card of cards) {
+  if (Object.hasOwn(reviewed, card.title)) {
+    [card.titleZh, card.summaryZh] = reviewed[card.title]!;
+    card.reviewed = true;
+  }
+}
 const out = ".data/pages-site";
 const esc = (s: string) => s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
 const date = (s: string, withTime = false) => new Intl.DateTimeFormat("zh-CN", { timeZone: "Asia/Shanghai", month: "2-digit", day: "2-digit", ...(withTime ? {hour:"2-digit",minute:"2-digit",hour12:false} : {}) }).format(new Date(s));
 const label = new Map<string,string>(CATEGORIES.map(c=>[c.key,c.label]));
 const updated = esc(date(updatedAt,true));
 const ok = sources.filter(s => s.ok).length;
-const headline = (c: Card) => esc(c.titleZh || c.title);
-const summary = (c: Card) => esc(c.summaryZh || c.summary);
+const headline = (c: Card) => esc(c.reviewed ? c.titleZh! : c.title);
+const summary = (c: Card) => esc(c.reviewed ? c.summaryZh! : c.summary);
 function article(c: Card, lead = false) {
-  const original = c.titleZh ? `<details class="original"><summary>查看原文标题</summary><span lang="en">${esc(c.title)}</span></details>` : "";
+  const original = c.reviewed ? `<details class="original"><summary>查看原标题</summary><span lang="en">${esc(c.title)}</span></details>`
+    : c.titleZh ? `<details class="original"><summary>查看机器翻译</summary><span>${esc(c.titleZh)}</span><p>${esc(c.summaryZh || "")}</p></details>` : "";
   const tag = lead ? "h2" : "h3";
   return `<article class="${lead ? "lead" : "story"}" data-beat="${esc(c.category)}">
     <div class="by"><span>${esc(label.get(c.category) || "行业动态")}</span><span>${esc(c.source)}${c.official ? " · 一手" : ""}</span><time datetime="${esc(c.publishedAt)}">${date(c.publishedAt)}</time></div>
@@ -33,12 +41,12 @@ const html = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><met
 <main class="wrap"><section class="intro"><div><div class="edition">行业观察</div><h1>品牌与市场营销热点</h1></div><div class="stamp">北京时间 <time datetime="${esc(updatedAt)}">${updated}</time> 更新<br>近七天 · ${cards.length} 篇</div></section>
 <nav aria-label="筛选栏目" hidden><button data-filter="all" aria-pressed="true">全部</button>${filters}</nav>
 <div id="stories">${article(lead,true)}<div class="grid">${cards.filter(c=>c!==lead).map(c=>article(c)).join("")}</div></div>
-<section id="sources"><details><summary>本轮信源状态 <span>${ok} / ${sources.length} 抓取成功</span></summary><p>每六小时尝试更新。首页按原始发布日期收录近七天有来源摘要或正文依据的条目；英文内容附机器翻译时可展开核对原标题。</p><table><thead><tr><th>来源</th><th>状态</th><th>发现</th><th>上页</th></tr></thead><tbody>${sourceRows}</tbody></table></details></section></main>
+<section id="sources"><details><summary>本轮信源状态 <span>${ok} / ${sources.length} 抓取成功</span></summary><p>每六小时尝试更新。首页按原始发布日期收录近七天有来源摘要或正文依据的条目；已校订的译文可展开查看原标题，其余英文报道可按需展开机器翻译。</p><table><thead><tr><th>来源</th><th>状态</th><th>发现</th><th>上页</th></tr></thead><tbody>${sourceRows}</tbody></table></details></section></main>
 <footer class="wrap"><b>Market Hot</b><span>原文版权归各来源所有</span><a href="https://github.com/LiChang1125/Market-Hot">GitHub ↗</a></footer>
 <script src="./filter.js"></script></body></html>`;
 await mkdir(out,{recursive:true});
 await Promise.all([
   writeFile(out+"/index.html",html),
   copyFile("scripts/pages/reader.css",out+"/reader.css"), copyFile("scripts/pages/filter.js",out+"/filter.js"),
-  copyFile("site/brand/logo.svg",out+"/logo.svg"), copyFile(input,out+"/digest.json")
+  copyFile("site/brand/logo.svg",out+"/logo.svg"), writeFile(out+"/digest.json", JSON.stringify({ updatedAt, sources, cards }))
 ]);

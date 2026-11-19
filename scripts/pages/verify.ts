@@ -11,6 +11,6 @@ assert.ok(cards.length >= 3 && sources.some((s: { ok: boolean }) => s.ok));
 for (const card of cards) {
   assert.ok(card.title && card.source && card.summary && Date.parse(card.publishedAt) <= Date.now());
   assert.ok(["https:", "http:"].includes(new URL(card.url).protocol));
-  assert.ok(links.toArray().some(el => $(el).attr("href") === card.url && $(el).text() === (card.titleZh || card.title)));
+  assert.ok(links.toArray().some(el => $(el).attr("href") === card.url && $(el).text() === (card.reviewed ? card.titleZh : card.title)));
 }
 console.log("Verified", cards.length, "article links, titles and dates.");
