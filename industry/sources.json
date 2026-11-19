@@ -97,7 +97,10 @@
           "titleSelector": "h1",
           "titleAuthoritative": true,
           "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
-        }
+        },
+        "titleSelector": ".txt",
+        "publishedAtSelector": ".txt-date",
+        "publishedAtUtcOffset": "+09:00"
       },
       "tier": "T1",
       "participation_mode": "editorial",
@@ -222,7 +225,11 @@
       "name": "CMA",
       "kind": "rss",
       "config": {
-        "feedUrl": "https://www.gov.uk/search/news-and-communications.atom?organisations%5B%5D=competition-and-markets-authority"
+        "feedUrl": "https://www.gov.uk/search/news-and-communications.atom?organisations%5B%5D=competition-and-markets-authority",
+        "detail": {
+          "maxFetches": 5,
+          "publishedAtSelector": "meta[property=\"article:published_time\"], .gem-c-published-dates time[datetime]"
+        }
       },
       "tier": "T1",
       "participation_mode": "editorial",
@@ -261,14 +268,17 @@
       "config": {
         "url": "https://www.china-caa.org/",
         "parseMode": "html",
-        "itemSelector": "a[href^=\"/cnaa/newsdetail/\"]",
+        "itemSelector": ".txtcon:has(a[href*=\"/newsdetail/\"])",
         "linkSelector": "a",
         "detail": {
           "maxFetches": 6,
           "titleSelector": "h1",
           "titleAuthoritative": true,
-          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
-        }
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]",
+          "summarySelector": "meta[name=\"description\"], meta[property=\"og:description\"]"
+        },
+        "titleSelector": ".info_til",
+        "publishedAtSelector": ".info_date"
       },
       "tier": "T1",
       "participation_mode": "editorial",
@@ -290,7 +300,8 @@
           "maxFetches": 6,
           "titleSelector": "h1",
           "titleAuthoritative": true,
-          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+          "publishedAtSelector": "meta[name=\"PubDate\"], meta[name=\"PubDateTime\"], meta[name=\"publishedtime\"], meta[property=\"article:published_time\"], time[datetime]",
+          "summarySelector": "meta[name=\"description\"], meta[property=\"og:description\"]"
         }
       },
       "tier": "T1",
@@ -378,14 +389,17 @@
       "config": {
         "url": "https://www.morketing.com/",
         "parseMode": "html",
-        "itemSelector": "a[href^=\"/detail/\"]",
+        "itemSelector": "a[href^=\"/detail/\"]:has(.card-title)",
         "linkSelector": "a",
         "detail": {
           "maxFetches": 6,
           "titleSelector": "h1",
           "titleAuthoritative": true,
-          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
-        }
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]",
+          "summarySelector": "meta[name=\"description\"], meta[property=\"og:description\"]"
+        },
+        "titleSelector": ".card-title",
+        "publishedAtSelector": ".metadata-item"
       },
       "tier": "T2",
       "participation_mode": "editorial",
@@ -406,7 +420,8 @@
           "maxFetches": 6,
           "titleSelector": "h1",
           "titleAuthoritative": true,
-          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]"
+          "publishedAtSelector": "meta[property=\"article:published_time\"], meta[name=\"date\"], time[datetime]",
+          "summarySelector": "meta[name=\"description\"], meta[property=\"og:description\"]"
         }
       },
       "tier": "T2",
@@ -551,7 +566,8 @@
           "maxFetches": 6,
           "titleSelector": "h1",
           "titleAuthoritative": true,
-          "publishedAtSelector": "meta[property=\"article:published_time\"], time[datetime]"
+          "publishedAtSelector": "meta[property=\"article:published_time\"], time[datetime]",
+          "summarySelector": "meta[name=\"description\"], meta[property=\"og:description\"]"
         }
       },
       "tier": "T2",
