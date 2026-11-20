@@ -66,6 +66,7 @@
       "kind": "web_list",
       "config": {
         "url": "https://www.publicisgroupe.com/en/news/press-releases",
+        "listingPrefixBytes": 49152,
         "parseMode": "html",
         "itemSelector": "a[href^=\"/en/news/press-releases/\"]",
         "linkSelector": "a",

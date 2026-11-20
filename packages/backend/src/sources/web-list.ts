@@ -83,7 +83,13 @@ async function fetchListingText(source: SourceRow): Promise<{ text: string; viaJ
     const page = await jinaRead(target, { purpose: "source_listing", subject: `source:${source.id}`, cacheToleranceSeconds: source.config.cacheToleranceSeconds, format, perRead: true });
     return { text: page.markdown, viaJina: true, base: source.config.baseUrl ?? target };
   }
-  const res = requireOk(await fetchListing(url, { headers: { accept: "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8", ...languageHeaders(source.config.acceptLanguage) }, timeoutMs: 25_000 }));
+  // Some newsrooms serve the entire archive newest-first in a single HTML page.
+  const prefix = Number(source.config.listingPrefixBytes);
+  const readPrefix = Number.isInteger(prefix) && prefix >= 16_384 && prefix <= 1_048_576 && source.config.parseMode === "html";
+  const res = requireOk(await fetchListing(url, {
+    headers: { accept: "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8", ...languageHeaders(source.config.acceptLanguage) },
+    timeoutMs: readPrefix ? 60_000 : 25_000, ...(readPrefix ? { maxBytes: prefix, truncate: true } : {}),
+  }));
   const text = res.text();
   contentDocument(text);
   return { text, viaJina: false, base: source.config.baseUrl ?? res.url };
