@@ -11,7 +11,8 @@
     "./modules/web": "./modules/web.ts",
     "./pages/*": "./pages/*",
     "./brand/*": "./brand/*",
-    "./marketing-tools": "./marketing-tools.ts"
+    "./marketing-tools": "./marketing-tools.ts",
+    "./marketing-ability": "./marketing-ability.ts"
   },
   "dependencies": {
     "@aihot/tool-rank": "*",

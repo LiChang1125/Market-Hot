@@ -3,6 +3,7 @@ import {load} from "cheerio";
 import {sql} from "@aihot/backend/db";
 import {beijingDate} from "@aihot/contracts/time";
 import type {ServerModule} from "@aihot/backend/modules";
+import {marketingAbility} from "@aihot/site/marketing-ability";
 import {policies, type Check} from "./public.ts";
 
 export function ruleLines(html:string, policy:typeof policies[number]):string[] {
@@ -42,16 +43,22 @@ export async function refreshPolicies(){
   if(!checked) throw Error("All policy checks failed");
   return {checked};
 }
-const mod:ServerModule={
-  name:"platform-watch",
-  http(app) {app.get("/api/site/platform-watch",async()=>{
+async function history(){
     const rows=await sql<{platform:string;checked_at:Date;state:Check["state"];evidence:string[];previous_evidence:string[]}[]>`
       SELECT platform,checked_at,state,evidence,previous_evidence FROM market_policy_checks
       WHERE checked_at>=now()-interval '180 days' OR state IN ('baseline','changed') ORDER BY checked_at DESC`;
     const excerpt=(lines:string[])=>lines.slice(0,3).map(line=>line.length>145?line.slice(0,142)+"…":line);
     return rows.map(r=>({platform:r.platform,at:r.checked_at.toISOString(),day:beijingDate(r.checked_at),state:r.state,
       evidence:r.state==="unchanged"?[]:excerpt(r.evidence),prior:excerpt(r.previous_evidence)} satisfies Check));
-  })},
+}
+const mod:ServerModule={
+  name:"platform-watch",
+  http(app) {app.get("/api/site/platform-watch",history)},
+  agent:{abilities:[marketingAbility("platform-policies","平台额度与政策","查看各平台最近一次政策核验、原文与变化","get_platform_policies",async()=>{
+    const checks=await history();
+    const platforms=policies.map(p=>({name:p.name,topic:p.topic,url:p.url,latest:checks.find(c=>c.platform===p.id)??null}));
+    return {text:["# 平台额度与政策",...platforms.map(p=>`- [${p.name}](${p.url}) · ${p.topic} · ${p.latest?.state??"尚未核验"}`)].join("\n"),structured:{platforms}};
+  })]},
   schedules:[{name:"market-policy-check",cron:"35 */6 * * *",run:refreshPolicies,when:()=>process.env.COLLECT_ENABLED==="true"}],
 };
 export default mod;

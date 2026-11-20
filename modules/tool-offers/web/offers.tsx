@@ -2,7 +2,7 @@ import {useEffect,useState} from "react";
 import {Link,useLoaderData,useLocation} from "react-router";
 import {apiGet} from "@aihot/web/lib/api.server";
 import {beijingStamp} from "@aihot/contracts/time";
-import {sourceUrl,sections,type Tool} from "@aihot/site/marketing-tools";
+import {sourceUrl,sections,hasFreeOffer,type Tool} from "@aihot/site/marketing-tools";
 import {ToolPage} from "@aihot/site/brand/ToolPage.tsx";
 import {localClaims,saveClaims,readAccount,accountRequest,type Claim} from "./library";
 export const handle={tab:"me",name:"免费额度"};
@@ -12,7 +12,7 @@ export default function Offers(){
   const tools=useLoaderData<typeof loader>(),album=useLocation().pathname.endsWith("/album");
   const [claims,setClaims]=useState<Record<string,Claim>>({}),[q,setQ]=useState(""),[group,setGroup]=useState(""),[message,setMessage]=useState(""),[pending,setPending]=useState(false);
   useEffect(()=>{setClaims(localClaims())},[]);
-  const offers=tools.flatMap(t=>t.plans.filter(p=>p.price.toLowerCase()==="free" || /free trial/i.test(p.price)).map(p=>({t,p,key:t.slug+"/"+p.name})));
+  const offers=tools.flatMap(t=>t.plans.filter(hasFreeOffer).map(p=>({t,p,key:t.slug+"/"+p.name})));
   async function toggle(t:Tool,plan:string,key:string){
     setPending(true);setMessage("");
     try{

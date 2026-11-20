@@ -2,7 +2,8 @@ import { load } from "cheerio";
 import type { ServerModule } from "@aihot/backend/modules";
 import { sql } from "@aihot/backend/db";
 import { beijingDate } from "@aihot/contracts/time";
-import { products, sourceUrl, type Observation, type Tool } from "@aihot/site/marketing-tools";
+import { products, sourceUrl, hasFreeOffer, type Observation, type Tool } from "@aihot/site/marketing-tools";
+import { marketingAbility } from "@aihot/site/marketing-ability";
 
 const clean = (value: string) => value.replace(/\s+/g, " ").trim();
 
@@ -60,6 +61,18 @@ export async function currentTools(): Promise<Tool[]> {
 
 const module: ServerModule = {
   name: "tool-rank",
+  agent: { abilities: [
+    marketingAbility("marketing-tools", "营销工具排行", "查看营销工具评分、评价数量和核验来源", "get_marketing_tools", async () => {
+      const tools = (await currentTools()).map(tool => ({ ...tool, url: sourceUrl(tool.slug) }));
+      return { text: ["# 营销工具排行", ...tools.map(t => `- [${t.name}](${t.url}) · ${t.rating}/5 · ${t.reviews} 条评价`)].join("\n"), structured: { tools } };
+    }),
+    marketingAbility("marketing-offers", "免费额度与优惠", "查找有官方定价依据的免费营销工具方案", "get_marketing_offers", async () => {
+      const offers = (await currentTools()).flatMap(t => t.plans.filter(hasFreeOffer).map(plan => ({
+        tool: t.name, plan, url: sourceUrl(t.slug), checked: t.checked,
+      })));
+      return { text: ["# 免费额度与优惠", ...offers.map(o => `- [${o.tool}](${o.url}) · ${o.plan.name} · ${o.plan.price}`)].join("\n"), structured: { offers } };
+    }),
+  ] },
   http(app) {
     app.get("/api/site/marketing-tools", async () => currentTools());
     app.get<{Params:{slug:string}}>("/api/site/marketing-tools/:slug", async (req, reply) => {

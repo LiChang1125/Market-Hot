@@ -1,5 +1,6 @@
 // Event jobs: serial grouping, debounced digests.
 import type { PgBoss } from "pg-boss";
+import { config } from "../config.ts";
 import { groupArticle } from "../events/group.ts";
 import { composeStoryDigest } from "../events/digest.ts";
 import { groupingPriority, settleNonEditorial } from "./content.ts";
@@ -19,7 +20,7 @@ export async function registerEventJobs(boss: PgBoss) {
     }
     return result;
   });
-  await work(boss, QUEUES.digest, { localConcurrency: 3, pollingIntervalSeconds: 5 }, ({ storyId }) => composeStoryDigest(storyId));
+  await work(boss, QUEUES.digest, { localConcurrency: config.digestConcurrency, pollingIntervalSeconds: 5 }, ({ storyId }) => composeStoryDigest(storyId));
 }
 
 /**

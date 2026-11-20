@@ -5,6 +5,7 @@
 // an article wait and retry with backoff; only a permanent refusal or exhausted retries end in
 // "failed", which the admin re-queues in bulk.
 import type { PgBoss } from "pg-boss";
+import { config } from "../config.ts";
 import { sql, type Db } from "../db.ts";
 import { extractArticleBody, pageFetchable } from "../content/extract.ts";
 import { analyzeArticle } from "../editorial/analyze.ts";
@@ -202,7 +203,7 @@ async function afterFailure(articleId: string, revision: number, error: unknown)
 }
 
 export async function registerContentJobs(boss: PgBoss) {
-  await work(boss, QUEUES.analyze, { localConcurrency: 6, pollingIntervalSeconds: 2 }, ({ articleId, attemptTag }) => processArticle(articleId, { attemptTag }));
+  await work(boss, QUEUES.analyze, { localConcurrency: config.analysisConcurrency, pollingIntervalSeconds: 2 }, ({ articleId, attemptTag }) => processArticle(articleId, { attemptTag }));
 }
 
 /**

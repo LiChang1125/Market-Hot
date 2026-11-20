@@ -16,6 +16,7 @@ export const products = [
 ];
 
 export interface Plan { name: string; price: string; features: string[] }
+export const hasFreeOffer = (plan: Plan) => plan.price.toLowerCase() === "free" || /free trial/i.test(plan.price);
 export interface Observation {
   title: string; rating: number; reviews: number; plans: Plan[];
 }

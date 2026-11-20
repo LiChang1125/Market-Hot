@@ -129,8 +129,6 @@ function requestFor<S extends z.ZodType>(opts: ChatJsonOptions<S>, spec: ModelSp
   return { request, temperature, maxTokens, userText };
 }
 
-/** A call without a backup waits this long for its answer. */
-const TIMEOUT_MS = 120_000;
 /**
  * A call with an evaluated backup gives up sooner: the backup takes over at once, and the primary's
  * receipt stays unknown (it may be billed as well). On the steps that have a backup, 6 of about 14,000
@@ -170,7 +168,7 @@ async function chatOnce<S extends z.ZodType>(opts: ChatJsonOptions<S>, circuit =
   if (!baseUrl || !apiKey || !spec.model) throw new ModelUnavailableError(`Model ${opts.model} is not configured (${spec.baseUrlEnv}, ${spec.apiKeyEnv}${spec.key === "default" ? ", LLM_MODEL" : ""})`);
 
   const { request, temperature, maxTokens, userText } = requestFor(opts, spec);
-  const timeoutMs = opts.timeoutMs ?? (circuit ? FAILOVER_TIMEOUT_MS : TIMEOUT_MS);
+  const timeoutMs = opts.timeoutMs ?? (circuit ? FAILOVER_TIMEOUT_MS : config.modelTimeoutMs);
   let permit: CircuitPermit;
   const body: Record<string, unknown> = {
     model: spec.model,
