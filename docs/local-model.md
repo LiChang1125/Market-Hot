@@ -17,7 +17,7 @@ LLM_VISION=false
 MODEL_CALLS_ENABLED=true
 ANALYSIS_CONCURRENCY=1
 DIGEST_CONCURRENCY=1
-LLM_TIMEOUT_MS=360000
+LLM_TIMEOUT_MS=600000
 ```
 
 在项目根目录运行 `docker compose -p market-hot -f docker-compose.yml -f deploy/local-model.compose.yml up -d model api worker web`。模型端口仅在项目网络内可用。编辑记录、请求结果和失败原因保存在站点 PostgreSQL 数据库，可在后台检查。此模型支持文本，首次采集和多篇长稿会排队。

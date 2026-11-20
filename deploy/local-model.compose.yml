@@ -4,7 +4,7 @@ services:
     image: ghcr.io/ggml-org/llama.cpp@sha256:9f11c1a27d5bdadef2ebf8c629706bf0ed48173f0fea1a78c4dd666918134a8e
     platform: linux/amd64
     restart: unless-stopped
-    cpus: 1.15
+    cpus: 1.5
     cpu_shares: 256
     mem_limit: 1450m
     memswap_limit: 1900m

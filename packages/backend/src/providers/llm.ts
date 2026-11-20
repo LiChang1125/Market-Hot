@@ -3,6 +3,7 @@
 // site, an environment variable or the admin's model page picks one of the site's named presets
 // (site/models.ts).
 import { z } from "zod";
+import { request as httpRequest } from "undici";
 import type { ModelPreset } from "@aihot/contracts/site-config";
 import { PRESETS } from "@aihot/site/models";
 import { config, credential } from "../config.ts";
@@ -204,17 +205,24 @@ async function chatOnce<S extends z.ZodType>(opts: ChatJsonOptions<S>, circuit =
     { ...request, fallbackFor },
     async () => {
       const started = performance.now();
-      let res: Response;
+      let responseId: string | null;
       let text: string;
       try {
-        res = await fetch(`${baseUrl.replace(/\/$/, "")}/chat/completions`, {
-          method: "POST",
-          headers: { "content-type": "application/json", authorization: `Bearer ${apiKey}` },
-          body: JSON.stringify(body),
-          signal: AbortSignal.timeout(timeoutMs),
-        });
-        text = await res.text();
-        assertAccepted(spec.service, res.status, text);
+        const url = `${baseUrl.replace(/\/$/, "")}/chat/completions`;
+        const options = { method: "POST" as const, headers: { "content-type": "application/json", authorization: `Bearer ${apiKey}` },
+          body: JSON.stringify(body), signal: AbortSignal.timeout(timeoutMs) };
+        if (spec.key === "default" && process.env.LLM_SERIAL === "true") {
+          // A queued CPU completion can take longer than fetch's five-minute headers timeout.
+          const res = await httpRequest(url, { ...options, headersTimeout: timeoutMs, bodyTimeout: timeoutMs });
+          text = await res.body.text();
+          responseId = String(res.headers["x-request-id"] ?? "") || null;
+          assertAccepted(spec.service, res.statusCode, text);
+        } else {
+          const res = await fetch(url, options);
+          text = await res.text();
+          responseId = res.headers.get("x-request-id");
+          assertAccepted(spec.service, res.status, text);
+        }
       } catch (error) {
         const failure = isConnectFailure(error) ? new ProviderRejectedError(`connect failed: ${String(error)}`, null, true) : error;
         // A refusal is the provider answering; any other failure counts against its availability.
@@ -236,7 +244,7 @@ async function chatOnce<S extends z.ZodType>(opts: ChatJsonOptions<S>, circuit =
       const usage = (json.usage as Record<string, unknown> | undefined) ?? null;
       return {
         response: { ...json, _latencyMs: Math.round(performance.now() - started) },
-        requestId: (json.id as string | undefined) ?? res.headers.get("x-request-id"),
+        requestId: (json.id as string | undefined) ?? responseId,
         usage,
         cost: null,
       };
