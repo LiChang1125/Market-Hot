@@ -1,6 +1,6 @@
 import {useEffect,useState} from "react";
 import {getStarred,replaceStarred} from "@aihot/web/lib/local-state";
-import {ToolPage} from "../../tool-rank/web/layout";
+import {ToolPage} from "@aihot/site/brand/ToolPage.tsx";
 import {accountRequest,readAccount,localClaims,saveClaims,type Entry} from "./library";
 export const handle={tab:"me",name:"读者账号"};
 export const meta=()=>[{title:"读者账号与同步 · Market Hot"}];

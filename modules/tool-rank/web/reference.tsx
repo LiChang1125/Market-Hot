@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router";
-import { products, sourceUrl } from "../public.ts";
-import { ToolPage } from "./layout";
+import { products, sourceUrl } from "@aihot/site/marketing-tools";
+import { ToolPage } from "@aihot/site/brand/ToolPage.tsx";
 export const handle = {tab:"tool-rank",name:"工具榜说明"};
 export const meta = () => [{title:"营销工具榜来源与规则 · Market Hot"}];
 export default function Reference(){

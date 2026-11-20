@@ -1,7 +1,7 @@
 import {Link,useLoaderData,useSearchParams} from "react-router";
 import {apiGet} from "@aihot/web/lib/api.server";
 import {beijingDate,beijingStamp,isValidDate} from "@aihot/contracts/time";
-import {ToolPage} from "../../tool-rank/web/layout";
+import {ToolPage} from "@aihot/site/brand/ToolPage.tsx";
 import {policies,type Check} from "../public.ts";
 export const handle={tab:"me",name:"平台监控"};
 export const meta=()=>[{title:"广告平台额度与政策变更监控 · Market Hot"}];

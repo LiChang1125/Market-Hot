@@ -10,7 +10,8 @@
     "./modules/server": "./modules/server.ts",
     "./modules/web": "./modules/web.ts",
     "./pages/*": "./pages/*",
-    "./brand/*": "./brand/*"
+    "./brand/*": "./brand/*",
+    "./marketing-tools": "./marketing-tools.ts"
   },
   "dependencies": {
     "@aihot/tool-rank": "*",

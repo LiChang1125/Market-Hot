@@ -2,7 +2,7 @@ import { load } from "cheerio";
 import type { ServerModule } from "@aihot/backend/modules";
 import { sql } from "@aihot/backend/db";
 import { beijingDate } from "@aihot/contracts/time";
-import { products, sourceUrl, type Observation, type Tool } from "./public.ts";
+import { products, sourceUrl, type Observation, type Tool } from "@aihot/site/marketing-tools";
 
 const clean = (value: string) => value.replace(/\s+/g, " ").trim();
 

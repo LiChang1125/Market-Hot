@@ -1,7 +1,7 @@
 import { Link, useLoaderData, useLocation, useSearchParams } from "react-router";
 import { apiGet } from "@aihot/web/lib/api.server";
-import { sections, type Tool } from "../public.ts";
-import { ToolPage } from "./layout";
+import { sections, type Tool } from "@aihot/site/marketing-tools";
+import { ToolPage } from "@aihot/site/brand/ToolPage.tsx";
 
 export const handle = { tab: "tool-rank", name: "营销工具榜" };
 export const meta = () => [{ title: "营销工具排行榜 · Market Hot" }];

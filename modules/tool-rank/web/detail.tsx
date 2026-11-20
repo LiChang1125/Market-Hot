@@ -1,8 +1,8 @@
 import { Link, useLoaderData } from "react-router";
 import { apiGet } from "@aihot/web/lib/api.server";
 import { beijingStamp } from "@aihot/contracts/time";
-import { products, sourceUrl, sections, type Tool } from "../public.ts";
-import { ToolPage } from "./layout";
+import { products, sourceUrl, sections, type Tool } from "@aihot/site/marketing-tools";
+import { ToolPage } from "@aihot/site/brand/ToolPage.tsx";
 
 export const handle = {tab:"tool-rank",name:"工具详情"};
 export async function loader({params,request}:{params:{slug:string};request:Request}) {

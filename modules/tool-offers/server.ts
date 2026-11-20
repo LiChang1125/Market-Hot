@@ -3,7 +3,7 @@ import {z} from "zod";
 import {sql} from "@aihot/backend/db";
 import type {ServerModule} from "@aihot/backend/modules";
 import type {FastifyRequest,FastifyReply} from "fastify";
-import {products} from "../tool-rank/public.ts";
+import {products} from "@aihot/site/marketing-tools";
 
 const hash=(s:string)=>createHash("sha256").update(s).digest("hex");
 const secret=()=>randomBytes(32).toString("base64url");

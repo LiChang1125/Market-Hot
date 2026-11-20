@@ -5,7 +5,6 @@
   "exports": {
     "./module": "./module.ts",
     "./server": "./server.ts",
-    "./web": "./web.tsx",
-    "./public": "./public.ts"
+    "./web": "./web.tsx"
   }
 }
