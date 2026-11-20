@@ -2,7 +2,7 @@
 
 中文品牌与市场营销热点站。读者可以从精选、热点榜、主题、日报、周报或月报进入原始报道，也可以订阅分类 RSS，或通过公开 API 与 MCP 阅读。
 
-[打开 Market Hot 免费阅读版](https://lichang1125.github.io/Market-Hot/)。首页展示近七天的报道、来源、原始发布时间和原文链接。GitHub Actions 每六小时尝试更新一次；若新一期可用来源或近期报道不足，网站继续展示上一期。页面底部可查看各来源本期采集情况。
+[打开 Market Hot](https://82.157.82.111/)。公网使用项目自带的 Web、API、采集进程和 PostgreSQL。原 [GitHub Pages 入口](https://lichang1125.github.io/Market-Hot/) 跳转到同一个站点。
 
 ## 编辑范围
 
@@ -34,7 +34,7 @@ npm run test:web
 node scripts/smoke.ts --base http://localhost:3000
 ```
 
-测试库名须以 `_test` 或 `_ci` 结尾，测试用户需要建库权限。冒烟检查访问已启动的完整服务。免费阅读版由 GitHub Pages 托管；如需后台、实时 API 和 MCP，可按部署指南运行完整服务。
+测试库名须以 `_test` 或 `_ci` 结尾，测试用户需要建库权限。冒烟检查访问已启动的完整服务。
 
 ## 上线前由运营者确认
 
