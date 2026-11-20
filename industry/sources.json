@@ -648,6 +648,28 @@
       "site_fulltext": false,
       "syndicate_fulltext": false,
       "owner_entity_id": "coca-cola"
+    },
+    {
+      "id": "walmart-newsroom",
+      "name": "沃尔玛集团新闻室",
+      "kind": "web_list",
+      "config": {
+        "url": "https://corporate.walmart.com/news",
+        "parseMode": "html",
+        "itemSelector": "a[href^='/news/20']",
+        "linkSelector": "a",
+        "detail": {
+          "maxFetches": 4,
+          "titleSelector": "h1",
+          "titleAuthoritative": true,
+          "publishedAtSelector": "meta[name='search_corporate_article_date']"
+        }
+      },
+      "tier": "T1",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "site_fulltext": false,
+      "syndicate_fulltext": false
     }
   ]
 }

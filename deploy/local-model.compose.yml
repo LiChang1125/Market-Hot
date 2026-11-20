@@ -6,8 +6,8 @@ services:
     restart: unless-stopped
     cpus: 1.5
     cpu_shares: 256
-    mem_limit: 1450m
-    memswap_limit: 1900m
+    mem_limit: 2000m
+    memswap_limit: 2450m
     volumes:
       - ${MODEL_DIR:?absolute model directory}:/models:ro
       - ${MODEL_KEY_FILE:?private local API key file}:/run/model.key:ro
