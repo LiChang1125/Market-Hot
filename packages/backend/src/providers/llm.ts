@@ -2,7 +2,7 @@
 // deployment names in LLM_BASE_URL / LLM_API_KEY / LLM_MODEL, and every capability uses it unless the
 // site, an environment variable or the admin's model page picks one of the site's named presets
 // (site/models.ts).
-import type { z } from "zod";
+import { z } from "zod";
 import type { ModelPreset } from "@aihot/contracts/site-config";
 import { PRESETS } from "@aihot/site/models";
 import { config, credential } from "../config.ts";
@@ -120,13 +120,15 @@ function requestFor<S extends z.ZodType>(opts: ChatJsonOptions<S>, spec: ModelSp
   // Never below 512: a smaller cap cut short structured answers down to an empty response (production, 2026-06-19).
   const maxTokens = Math.max(opts.maxTokens ?? 1500, 512) + (spec.reasoningTokens ?? 0);
   const userText = typeof opts.user === "string" ? opts.user : JSON.stringify(opts.user);
+  const outputSchema = spec.key === "default" && spec.jsonMode && opts.json !== false && !opts.parse
+    && process.env.LLM_JSON_SCHEMA === "true" ? z.toJSONSchema(opts.schema, { unrepresentable: "any" }) : undefined;
   const request: ReceiptRequest = {
     service: spec.service, model: spec.model, purpose: opts.purpose, subject: opts.subject,
-    identity: { model: spec.model, promptVersion: opts.promptVersion, system: sha256(opts.system), user: sha256(userText), temperature, maxTokens, extra: spec.extra ?? null },
+    identity: { model: spec.model, promptVersion: opts.promptVersion, system: sha256(opts.system), user: sha256(userText), temperature, maxTokens, extra: spec.extra ?? null, ...(outputSchema ? { outputSchema } : {}) },
     requestSummary: { promptVersion: opts.promptVersion, systemHash: sha256(opts.system), userHash: sha256(userText), userChars: userText.length, temperature, maxTokens },
     attemptTag: opts.attemptTag,
   };
-  return { request, temperature, maxTokens, userText };
+  return { request, temperature, maxTokens, userText, outputSchema };
 }
 
 /**
@@ -167,7 +169,7 @@ async function chatOnce<S extends z.ZodType>(opts: ChatJsonOptions<S>, circuit =
   const apiKey = credential("models", spec.apiKeyEnv);
   if (!baseUrl || !apiKey || !spec.model) throw new ModelUnavailableError(`Model ${opts.model} is not configured (${spec.baseUrlEnv}, ${spec.apiKeyEnv}${spec.key === "default" ? ", LLM_MODEL" : ""})`);
 
-  const { request, temperature, maxTokens, userText } = requestFor(opts, spec);
+  const { request, temperature, maxTokens, userText, outputSchema } = requestFor(opts, spec);
   const timeoutMs = circuit ? opts.timeoutMs ?? FAILOVER_TIMEOUT_MS
     : Math.max(opts.timeoutMs ?? 120_000, config.modelTimeoutFloorMs);
   let permit: CircuitPermit;
@@ -181,7 +183,9 @@ async function chatOnce<S extends z.ZodType>(opts: ChatJsonOptions<S>, circuit =
     ],
     temperature,
     max_tokens: maxTokens,
-    ...(spec.jsonMode && opts.json !== false ? { response_format: { type: "json_object" } } : {}),
+    ...(spec.jsonMode && opts.json !== false ? { response_format: outputSchema
+      ? { type: "json_schema", json_schema: { name: "result", schema: outputSchema } }
+      : { type: "json_object" } } : {}),
     ...(spec.extra ?? {}),
   };
 

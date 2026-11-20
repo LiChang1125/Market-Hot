@@ -42,4 +42,4 @@ node scripts/smoke.ts --base http://localhost:3000
 - 从实际来稿标注 100–200 篇「该选／不该选」，用 [精选评测](docs/selection.md) 校准门槛。当前沿用框架初始值，例题仅供对照格式。
 - 部署域名、运营主体、联系方式、日志保留和隐私条款，模型提供方、采集频率与付费上限。
 
-本项目基于 [AIHOT 开源框架](https://github.com/KKKKhazix/AIHOT) 提供的 MIT 许可代码。上游版本为 `88b114d7efbcdee17c3fc4d2e29c27672178e10a`。参见 [LICENSE](LICENSE) 与 [NOTICE](NOTICE)。
+本项目基于 [AIHOT 开源框架](https://github.com/KKKKhazix/AIHOT) 提供的 MIT 许可代码，已同步至 `e0554b64aa3a75dcc29e2b4dac570241ae532b35`。参见 [LICENSE](LICENSE) 与 [NOTICE](NOTICE)。服务器本地推理配置见[本地模型部署说明](docs/local-model.md)。

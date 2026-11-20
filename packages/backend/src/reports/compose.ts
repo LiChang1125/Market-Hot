@@ -50,7 +50,7 @@ async function savedReport(kind: ReportKind, key: string) {
  * it is. With a reason (an explicit regeneration) the issue is replaced and the edition it replaces is
  * kept as a revision. Says whether the issue was written.
  */
-async function saveReport(kind: ReportKind, key: string, start: Date, end: Date, content: Record<string, unknown>, reason: string | undefined, receiptIds: number[]): Promise<boolean> {
+export async function saveReport(kind: ReportKind, key: string, start: Date, end: Date, content: Record<string, unknown>, reason: string | undefined, receiptIds: number[]): Promise<boolean> {
   return sql.begin(async (tx) => {
     const insert = async () => (await tx`INSERT INTO reports (kind, key, window_start, window_end, content, generated_at)
       VALUES (${kind}, ${key}, ${start}, ${end}, ${tx.json(content as never)}, now()) ON CONFLICT (kind, key) DO NOTHING`).count > 0;
