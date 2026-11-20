@@ -9,6 +9,11 @@ export async function accountRequest<T>(path:string,body?:unknown):Promise<T>{
   return res.json();
 }
 export const readAccount=()=>accountRequest<{signedIn:boolean;account?:string;entries:Entry[]}>("");
+export function syncSnapshot(account:string) {
+  const key="market-sync:"+account;
+  const stamps:Record<string,string>=JSON.parse(localStorage.getItem(key)||"{}");
+  return {stamps,save:(next:Record<string,string>)=>localStorage.setItem(key,JSON.stringify(next))};
+}
 export function localClaims():Record<string,Claim>{
   try{return JSON.parse(localStorage.getItem("market-claims")||"{}") || {}}catch{return {}}
 }

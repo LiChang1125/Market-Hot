@@ -4,7 +4,7 @@ import {apiGet} from "@aihot/web/lib/api.server";
 import {beijingStamp} from "@aihot/contracts/time";
 import {sourceUrl,sections,hasFreeOffer,type Tool} from "@aihot/site/marketing-tools";
 import {ToolPage} from "@aihot/site/brand/ToolPage.tsx";
-import {localClaims,saveClaims,readAccount,accountRequest,type Claim} from "./library";
+import {localClaims,saveClaims,readAccount,accountRequest,syncSnapshot,type Claim} from "./library";
 export const handle={tab:"me",name:"免费额度"};
 export const meta=()=>[{title:"营销工具免费额度与优惠 · Market Hot"}];
 export async function loader({request}:{request:Request}){return apiGet<Tool[]>("/api/site/marketing-tools",{signal:request.signal})}
@@ -18,7 +18,13 @@ export default function Offers(){
     try{
       const next={...localClaims()};if(next[key])delete next[key];else next[key]={slug:t.slug,plan,at:new Date().toISOString()};
       const state=await readAccount();
-      if(state.signedIn)await accountRequest("entries",[{kind:"claim",key,value:next[key]||null}]);
+      if(state.account){
+        await accountRequest("entries",[{kind:"claim",key,value:next[key]||null}]);
+        const snapshot=syncSnapshot(state.account);
+        if(next[key])snapshot.stamps["claim/"+key]=next[key].at;
+        else delete snapshot.stamps["claim/"+key];
+        snapshot.save(snapshot.stamps);
+      }
       saveClaims(next);setClaims(next);
     }catch(e){setMessage(String(e))}finally{setPending(false)}
   }

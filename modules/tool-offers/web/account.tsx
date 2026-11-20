@@ -1,7 +1,7 @@
 import {useEffect,useState} from "react";
 import {getStarred,replaceStarred} from "@aihot/web/lib/local-state";
 import {ToolPage} from "@aihot/site/brand/ToolPage.tsx";
-import {accountRequest,readAccount,localClaims,saveClaims,type Entry} from "./library";
+import {accountRequest,readAccount,localClaims,saveClaims,syncSnapshot,type Entry} from "./library";
 export const handle={tab:"me",name:"读者账号"};
 export const meta=()=>[{title:"读者账号与同步 · Market Hot"}];
 export default function Account(){
@@ -10,8 +10,8 @@ export default function Account(){
   async function run(action:()=>Promise<void>){setBusy(true);setMsg("");try{await action()}catch(e){setMsg(String(e))}finally{setBusy(false)}}
   async function sync(){
     const remote=await readAccount();if(!remote.account)throw Error("请先登录。");
-    const snapshotKey="market-sync:"+remote.account;
-    const previous:Record<string,string>=JSON.parse(localStorage.getItem(snapshotKey)||"{}");
+    const snapshot=syncSnapshot(remote.account);
+    const previous=snapshot.stamps;
     const entries:Entry[]=[...getStarred().map(value=>({kind:"star" as const,key:value.id,value})),
       ...Object.entries(localClaims()).map(([key,value])=>({kind:"claim" as const,key,value}))];
     const id=(e:Entry)=>e.kind+"/"+e.key;
@@ -32,7 +32,7 @@ export default function Account(){
     const claims=Object.fromEntries(merged.flatMap(e=>e.kind==="claim"?[[e.key,e.value]]:[]));
     if(!replaceStarred(stars))throw Error("本机收藏无法写入。");
     saveClaims(claims);
-    localStorage.setItem(snapshotKey,JSON.stringify(Object.fromEntries(merged.map(e=>[id(e),stamp(e)]))));
+    snapshot.save(Object.fromEntries(merged.map(e=>[id(e),stamp(e)!])));
     setMsg("同步完成，共 "+stars.length+" 条收藏和 "+Object.keys(claims).length+" 条额度记录。");
   }
   return <ToolPage title="读者账号与同步" back={{to:"/more",label:"我的"}}>

@@ -146,6 +146,17 @@ const FAILOVER_TIMEOUT_MS = 30_000;
  * followed by a second paid request.
  */
 export async function chatJson<S extends z.ZodType>(opts: ChatJsonOptions<S>): Promise<ChatJsonResult<z.infer<S>>> {
+  if (process.env.LLM_SERIAL !== "true" || opts.model !== "default") return chatWithFallback(opts);
+  const previous = localSlot;
+  let release!: () => void;
+  localSlot = new Promise<void>(resolve => { release = resolve; });
+  await previous;
+  try { return await chatWithFallback(opts); } finally { release(); }
+}
+
+// A CPU deployment has one inference slot. Queue before opening the receipt and starting its timeout.
+let localSlot = Promise.resolve();
+async function chatWithFallback<S extends z.ZodType>(opts: ChatJsonOptions<S>): Promise<ChatJsonResult<z.infer<S>>> {
   if (!opts.fallbackModel) return chatOnce(opts);
   const backupOpts = { ...opts, model: opts.fallbackModel };
   const fallbackFor = logicalKeyFor(requestFor(opts, MODELS[opts.model]!).request);
