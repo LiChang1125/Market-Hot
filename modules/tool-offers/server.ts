@@ -73,7 +73,7 @@ const module:ServerModule={
         const id=await owner(req);
         if(!id) return {signedIn:false,entries:[]};
         const entries=await sql`SELECT kind,entry_key AS key,value FROM market_reader_entries WHERE owner=${id} ORDER BY entry_key`;
-        return {signedIn:true,entries};
+        return {signedIn:true,account:id,entries};
       });
       api.post("/entries",async(req,reply)=>{
         const id=await owner(req);if(!id) return reply.code(401).send({error:"login"});

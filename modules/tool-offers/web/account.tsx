@@ -9,17 +9,31 @@ export default function Account(){
   useEffect(()=>{readAccount().then(d=>setSigned(d.signedIn)).catch(e=>setMsg(e.message))},[]);
   async function run(action:()=>Promise<void>){setBusy(true);setMsg("");try{await action()}catch(e){setMsg(String(e))}finally{setBusy(false)}}
   async function sync(){
-    const remote=await readAccount();if(!remote.signedIn)throw Error("请先登录。");
-    const stars=new Map(getStarred().map(s=>[s.id,s])),claims=localClaims();
-    for(const e of remote.entries){
-      if(e.kind==="star" && (!stars.has(e.key)||stars.get(e.key)!.savedAt<e.value.savedAt)) stars.set(e.key,e.value);
-      if(e.kind==="claim" && (!claims[e.key]||claims[e.key]!.at<e.value.at)) claims[e.key]=e.value;
+    const remote=await readAccount();if(!remote.account)throw Error("请先登录。");
+    const snapshotKey="market-sync:"+remote.account;
+    const previous:Record<string,string>=JSON.parse(localStorage.getItem(snapshotKey)||"{}");
+    const entries:Entry[]=[...getStarred().map(value=>({kind:"star" as const,key:value.id,value})),
+      ...Object.entries(localClaims()).map(([key,value])=>({kind:"claim" as const,key,value}))];
+    const id=(e:Entry)=>e.kind+"/"+e.key;
+    const stamp=(e:Entry|undefined)=>e?.kind==="star"?e.value.savedAt:e?.value.at;
+    const local=new Map(entries.map(e=>[id(e),e]));
+    const cloud=new Map(remote.entries.map(e=>[id(e),e]));
+    const changes=[];
+    for(const key of new Set([...Object.keys(previous),...local.keys()])){
+      const here=local.get(key),there=cloud.get(key),last=previous[key];
+      if(stamp(here)===last || stamp(here)===stamp(there))continue;
+      if(stamp(there)!==last && (!here || (there && stamp(there)!>=stamp(here)!)))continue;
+      if(here){changes.push(here);cloud.set(key,here)}
+      else if(there){changes.push({kind:there.kind,key:there.key,value:null});cloud.delete(key)}
     }
-    const entries:Entry[]=[...Array.from(stars.values(),s=>({kind:"star" as const,key:s.id,value:s})),
-      ...Object.entries(claims).map(([key,value])=>({kind:"claim" as const,key,value}))];
-    for(let i=0;i<entries.length;i+=200)await accountRequest("entries",entries.slice(i,i+200));
-    if(!replaceStarred([...stars.values()]))throw Error("本机收藏无法写入。");
-    saveClaims(claims);setMsg("同步完成，共 "+stars.size+" 条收藏和 "+Object.keys(claims).length+" 条额度记录。");
+    for(let i=0;i<changes.length;i+=200)await accountRequest("entries",changes.slice(i,i+200));
+    const merged=[...cloud.values()];
+    const stars=merged.flatMap(e=>e.kind==="star"?[e.value]:[]);
+    const claims=Object.fromEntries(merged.flatMap(e=>e.kind==="claim"?[[e.key,e.value]]:[]));
+    if(!replaceStarred(stars))throw Error("本机收藏无法写入。");
+    saveClaims(claims);
+    localStorage.setItem(snapshotKey,JSON.stringify(Object.fromEntries(merged.map(e=>[id(e),stamp(e)]))));
+    setMsg("同步完成，共 "+stars.length+" 条收藏和 "+Object.keys(claims).length+" 条额度记录。");
   }
   return <ToolPage title="读者账号与同步" back={{to:"/more",label:"我的"}}>
     {signed?<><p>已登录。可以将此设备的收藏和额度记录与云端合并。</p>

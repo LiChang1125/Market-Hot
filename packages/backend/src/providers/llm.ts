@@ -168,7 +168,8 @@ async function chatOnce<S extends z.ZodType>(opts: ChatJsonOptions<S>, circuit =
   if (!baseUrl || !apiKey || !spec.model) throw new ModelUnavailableError(`Model ${opts.model} is not configured (${spec.baseUrlEnv}, ${spec.apiKeyEnv}${spec.key === "default" ? ", LLM_MODEL" : ""})`);
 
   const { request, temperature, maxTokens, userText } = requestFor(opts, spec);
-  const timeoutMs = opts.timeoutMs ?? (circuit ? FAILOVER_TIMEOUT_MS : config.modelTimeoutMs);
+  const timeoutMs = circuit ? opts.timeoutMs ?? FAILOVER_TIMEOUT_MS
+    : Math.max(opts.timeoutMs ?? 120_000, config.modelTimeoutFloorMs);
   let permit: CircuitPermit;
   const body: Record<string, unknown> = {
     model: spec.model,

@@ -8,7 +8,7 @@ export async function accountRequest<T>(path:string,body?:unknown):Promise<T>{
   if(!res.ok) throw new Error(res.status===401?"登录码无效或会话已结束。":"保存失败，请重试。");
   return res.json();
 }
-export const readAccount=()=>accountRequest<{signedIn:boolean;entries:Entry[]}>("");
+export const readAccount=()=>accountRequest<{signedIn:boolean;account?:string;entries:Entry[]}>("");
 export function localClaims():Record<string,Claim>{
   try{return JSON.parse(localStorage.getItem("market-claims")||"{}") || {}}catch{return {}}
 }

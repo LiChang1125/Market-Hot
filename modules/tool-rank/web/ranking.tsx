@@ -1,6 +1,6 @@
 import { Link, useLoaderData, useLocation, useSearchParams } from "react-router";
 import { apiGet } from "@aihot/web/lib/api.server";
-import { sections, type Tool } from "@aihot/site/marketing-tools";
+import { sections, monthlyPrice, startingPrice, type Tool } from "@aihot/site/marketing-tools";
 import { ToolPage } from "@aihot/site/brand/ToolPage.tsx";
 
 export const handle = { tab: "tool-rank", name: "营销工具榜" };
@@ -21,11 +21,16 @@ export default function Ranking() {
   }
   const q=(params.get("q") || "").trim().toLowerCase();
   const minimum=Number(params.get("min") || 0);
-  const sort=params.get("sort") || "rating";
+  const currencies=[...new Set(rows.flatMap(t=>t.plans.flatMap(p=>monthlyPrice(p)?.currency??[])))].sort();
+  const currency=params.get("currency") || currencies[0] || "CNY";
+  const sort=params.get("sort") || (prices?"price":"rating");
+  const budget=params.get("budget");
   const list=rows.filter(t => (!category || t.category === category) && t.rating >= minimum &&
     [t.name,t.title,sections[t.category]].some(text=>text?.toLowerCase().includes(q)) &&
-    (!params.has("free") || t.plans.some(p=>p.price.toLowerCase()==="free")))
-    .sort((a,b)=>sort==="reviews" ? b.reviews-a.reviews || b.rating-a.rating : b.rating-a.rating || b.reviews-a.reviews);
+    (!params.has("free") || t.plans.some(p=>p.price.toLowerCase()==="free")) &&
+    (!prices || !budget || startingPrice(t,currency)<=Number(budget)))
+    .sort((a,b)=>(sort==="price"?startingPrice(a,currency)-startingPrice(b,currency):0) ||
+      (sort==="reviews" ? b.reviews-a.reviews || b.rating-a.rating : b.rating-a.rating || b.reviews-a.reviews));
   return <ToolPage title={prices ? "营销工具价格" : "营销工具排行榜"}>
     <p className="market-muted">比较 Shopify 应用市场中营销工具的商家评分、评论数量与套餐。</p>
     <div className="market-links"><Link to="/leaderboard/rules">怎么算</Link><Link to="/leaderboard/sources">数据来源</Link></div>
@@ -38,6 +43,9 @@ export default function Ranking() {
       <input aria-label="搜索营销工具" type="search" placeholder="搜索营销工具" value={params.get("q") || ""} onChange={e=>change("q",e.target.value)}/>
       <label><input type="checkbox" checked={params.has("free")} onChange={e=>change("free",e.target.checked?"1":"")}/> 有免费套餐</label>
       <label>评分下限 <select value={minimum} onChange={e=>change("min",e.target.value)}>{[0,4,4.5,4.8,4.9].map(v=><option key={v} value={v}>{v || "不限"}</option>)}</select></label>
+      {prices&&<><label>每月预算上限 <input type="number" min="0" aria-label="每月预算上限" placeholder="不限" value={budget??""} onChange={e=>change("budget",e.target.value)}/></label>
+        <label>币种 <select value={currency} onChange={e=>change("currency",e.target.value)}>{currencies.map(c=><option key={c}>{c}</option>)}</select></label>
+        <button className="market-button" onClick={()=>change("sort","price")}>按起始月费排序</button></>}
     </div>
     <h2>{category ? sections[category] : prices ? "当前套餐" : "综合榜"} <small>{list.length} 个工具</small></h2>
     <div className="table-scroll"><table><thead><tr><th>名次</th><th>工具</th><th><button onClick={()=>change("sort","rating")}>商家评分 {sort==="rating"?"↓":""}</button></th><th><button onClick={()=>change("sort","reviews")}>评论数 {sort==="reviews"?"↓":""}</button></th>{prices && <th>月费与条件</th>}</tr></thead>

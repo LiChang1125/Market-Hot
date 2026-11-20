@@ -68,7 +68,7 @@ export const config = {
   modelCallsEnabled: bool("MODEL_CALLS_ENABLED", false),
   analysisConcurrency: Math.max(1, int("ANALYSIS_CONCURRENCY", 6)),
   digestConcurrency: Math.max(1, int("DIGEST_CONCURRENCY", 3)),
-  modelTimeoutMs: Math.max(1000, int("LLM_TIMEOUT_MS", 120_000)),
+  modelTimeoutFloorMs: Math.max(0, int("LLM_TIMEOUT_MS", 0)),
   devAdmin: env.DEV_AUTH_ROLE === "admin" ? { displayName: env.DEV_AUTH_DISPLAY_NAME || "Dev Admin" } : null,
   /** The admin password (at least 12 characters), for sites with admin pages. */
   adminPassword: env.ADMIN_PASSWORD || null,

@@ -1,0 +1,17 @@
+# Start with the default compose file and the same -p name as the website.
+services:
+  model:
+    image: ghcr.io/ggml-org/llama.cpp@sha256:9f11c1a27d5bdadef2ebf8c629706bf0ed48173f0fea1a78c4dd666918134a8e
+    platform: linux/amd64
+    restart: unless-stopped
+    cpus: 1.15
+    cpu_shares: 256
+    mem_limit: 1450m
+    memswap_limit: 1900m
+    volumes:
+      - ${MODEL_DIR:?absolute model directory}:/models:ro
+      - ${MODEL_KEY_FILE:?private local API key file}:/run/model.key:ro
+    command: ["-m", "/models/qwen2.5-1.5b-instruct-q4_k_m.gguf", "--alias", "market-hot-local", "--host", "0.0.0.0", "--port", "8080", "--api-key-file", "/run/model.key", "--parallel", "1", "--threads", "2", "--threads-batch", "2", "--ctx-size", "8192"]
+    networks:
+      default:
+        aliases: [market-hot-model]
