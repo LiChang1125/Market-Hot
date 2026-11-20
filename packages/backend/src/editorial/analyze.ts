@@ -16,7 +16,7 @@ import { CATEGORY_KEYS } from "@aihot/contracts/taxonomy";
 import { CATEGORIES } from "@aihot/industry/taxonomy";
 import { SELECTION } from "@aihot/industry/selection";
 import { ITEM_COPY } from "@aihot/site";
-import { awardAnnouncement } from "@aihot/industry/prefilter";
+import { awardAnnouncement, measuredAdBusiness } from "@aihot/industry/prefilter";
 import { sql } from "../db.ts";
 import { editorialPolicy } from "../modules.ts";
 import { chatJson, MODELS, type ContentPart } from "../providers/llm.ts";
@@ -250,8 +250,12 @@ async function runPrefilter(a: AnalyzeInputArticle, opts: StepOpts): Promise<Non
   });
   // A BLOCK without text to back it (an original post that is only media or a link) counts as UNKNOWN (which goes on).
   const label = res.data.label === "BLOCK" && missingEvidence(a) ? "UNKNOWN" : res.data.label;
-  if (awardAnnouncement(a.title, a.fullBodyText || a.bodyText || a.excerpt || "")) {
+  const body = a.fullBodyText || a.bodyText || a.excerpt || "";
+  if (awardAnnouncement(a.title, body)) {
     return { label: "BLOCK", reason: "获奖公告，未报告可量化的经营结果", model: res.model, receiptId: res.receiptId, reused: res.reused };
+  }
+  if (label !== "PASS" && measuredAdBusiness(a.title, body)) {
+    return { label: "PASS", reason: "正文披露广告经营指标及变动幅度", model: res.model, receiptId: res.receiptId, reused: res.reused };
   }
   return { label, reason: res.data.reason, model: res.model, receiptId: res.receiptId, reused: res.reused };
 }

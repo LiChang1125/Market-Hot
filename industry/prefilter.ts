@@ -7,3 +7,12 @@ export function awardAnnouncement(title: string, body: string): boolean {
   const measuredOutcome = /(?:revenue|sales|conversion|return on ad spend|market share|营收|销售额|转化率|广告支出回报|市场份额).{0,45}\d[\d.,]*\s*(?:%|％|个百分点|million|billion|万元|亿元)/i;
   return !measuredOutcome.test(title + "\n" + body);
 }
+
+/** A quantified change in an advertising business is in scope even inside quarterly financial reporting. */
+export function measuredAdBusiness(title: string, body: string): boolean {
+  const metric = /\b(?:ad|advertising|media)\s+(?:sales|revenue|spend|spending|budget|investment)\b|广告(?:业务|销售|收入|营收|支出|预算)/i;
+  if (!metric.test(title)) return false;
+  return body.split(/[。！？\n]|(?<=[a-z%])\.\s+/i).some(sentence =>
+    /\d(?:[\d,.]*\d)?\s*(?:%|％|个百分点)/.test(sentence) &&
+    (metric.test(sentence) || /\badvertising (?:business|growth)\b/i.test(sentence)));
+}
